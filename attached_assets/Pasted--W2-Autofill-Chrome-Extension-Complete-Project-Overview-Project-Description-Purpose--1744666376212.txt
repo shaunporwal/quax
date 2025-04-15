@@ -1,0 +1,152 @@
+# W2 Autofill Chrome Extension: Complete Project Overview
+
+---
+
+## Project Description
+- **Purpose:** Create a Chrome extension that extracts data from W2 tax forms and automatically fills in online tax forms.
+- **Target Users:** Individual taxpayers filing their taxes online.
+- **Key Functionality:** 
+  - PDF parsing
+  - Data extraction
+  - Form field detection and autofill
+- **Privacy Focus:** Process W2 data locally with optional AI enhancement (OpenAI only)
+
+---
+
+## Technology Stack
+- **Frontend:**
+  - **HTML/CSS:** Simple popup interface with file upload and settings
+  - **JavaScript:** Core extension functionality
+  - **PDF.js:** Mozilla's PDF rendering and extraction library
+  - **Canvas API:** For rendering PDFs as images when needed
+- **AI Components:**
+  - **OpenAI API (GPT-4.1 with vision capabilities):** For enhanced extraction
+- **Development Tools:**
+  - **Chrome Extension Developer Tools:** For debugging and testing
+  - **Webpack/Parcel:** For bundling the extension code (optional)
+  - **ESLint:** For code quality and style consistency
+
+---
+
+## Extension Components
+- **manifest.json:** Extension configuration (permissions, resources, CSP)
+- **popup.html / popup.css:** User interface for the extension
+- **popup.js:** Main controller for user interactions
+- **pdf.js:** PDF processing library plus custom extraction logic
+- **content.js:** Content script for form field identification and filling
+- **background.js:** Background script for persistent functionality (if needed)
+
+---
+
+## Key Functionalities
+- **PDF Text Extraction:** Convert PDF to text or images using PDF.js
+- **Data Parsing:** Extract W2 values using pattern matching or AI
+- **Form Detection:** Identify form fields on tax websites
+- **Field Mapping:** Match W2 data to the correct form fields
+- **Settings Management:** Save user preferences and API key securely in Chrome storage
+
+---
+
+## W2 Tax Information
+
+### Critical W2 Fields to Extract
+- **Box 1:** Wages, tips, other compensation
+- **Box 2:** Federal income tax withheld
+- **Box 3:** Social Security wages
+- **Box 4:** Social Security tax withheld
+- **Box 5:** Medicare wages and tips
+- **Box 6:** Medicare tax withheld
+- **Employer Information:** Name, EIN (Employer Identification Number)
+- **Employee Information:** Name, SSN (display only last 4 digits for privacy)
+- **State Information:** State income tax and wages (Boxes 15–17)
+- **Local Information:** Local income tax (Boxes 18–19)
+
+### W2 Form Variations
+- Different employer layouts (varied W2 formats)
+- Government W2s with specific formats
+- Multiple/combined W2s for individuals with several jobs
+- Electronic versus scanned paper W2s
+
+---
+
+## Simplest Approach: W2 Extraction with GPT-4.1 Vision
+
+### Core Concept
+- Use PDF rendering to create images sent directly to GPT-4.1's vision API.
+- Bypass complex text extraction algorithms with vision-based analysis.
+
+### Key Components
+1. **PDF Rendering Pipeline**
+   - Convert PDF to a high-quality image using PDF.js.
+   - Render the first page (containing key W2 data) to a canvas.
+   - Convert the canvas to a base64-encoded image.
+2. **OpenAI Vision API Integration**
+   - Send the rendered image to GPT-4.1 with clear, precise instructions to extract W2 fields.
+   - Parse the structured JSON response containing W2 data.
+3. **Minimalist User Interface**
+   - File upload control for W2 PDF selection.
+   - API key input field.
+   - Extraction button to trigger processing.
+   - Results display area for extracted data.
+
+---
+
+## Workflow
+1. **Input:**
+   - User selects a W2 PDF file.
+   - User provides an OpenAI API key (stored locally).
+2. **Processing:**
+   - PDF first page is rendered to an image.
+   - The image is sent to GPT-4.1 with specific extraction instructions.
+   - The API returns structured data with all W2 fields.
+3. **Output:**
+   - Extracted W2 data is displayed to the user.
+   - Data is made available for autofill on online tax forms.
+
+---
+
+## Advantages
+- **Simplicity:** Eliminates the need for complex text extraction algorithms.
+- **Accuracy:** Vision models understand the visual layout of W2 forms.
+- **Adaptability:** Works with various W2 formats (scanned, digital, different employer layouts).
+- **Maintainability:** Reduced code complexity simplifies maintenance and debugging.
+
+---
+
+## Implementation Considerations
+- **Performance:** PDF rendering happens on the client side before an API call.
+- **Privacy:** Only the rendered image is sent to OpenAI; raw data remains local.
+- **Cost Efficiency:** One API call per W2 form.
+- **Error Handling:** Include fallbacks and error messages for API call failures.
+
+---
+
+## Chrome Extension Integration
+- **Permissions:** Minimal requirements (e.g., file access, OpenAI API).
+- **Architecture:**
+  - All processing occurs in the popup interface.
+  - Content script is used only for detecting form fields and autofilling data.
+- **Storage:** Securely save the API key in Chrome storage for convenience.
+
+---
+
+## Replit Project Prompt
+- **Project Name:** `quax` (short for Quick Taxes)
+- **Required Files:**
+  - `manifest.json` (extension configuration, permissions, and CSP)
+  - `popup.html` / `popup.css` (user interface: file upload, API key input, extraction button, result display)
+  - `popup.js` (handles file reading, PDF extraction with PDF.js, and API integration with OpenAI)
+  - `pdf.js` (load the official PDF.js library for PDF processing)
+  - `content.js` (detects form fields on tax websites and autofills data)
+  - `background.js` (if needed for persistent background tasks)
+- **Development Tasks:**
+  - Set up the GitHub repository with the proper file structure and assets (including icons and PDF.js).
+  - Configure `manifest.json` with appropriate permissions and a secure Content Security Policy.
+  - Build and test the popup interface for file handling and API key management.
+  - Integrate PDF rendering and text extraction using PDF.js.
+  - Implement the OpenAI API call to extract structured W2 data from the rendered image.
+  - Validate the form detection and autofill functionality with the content script.
+
+---
+
+This complete markdown provides a full project overview with every essential detail required to prompt Replit to scaffold a Chrome extension project that supports OpenAI (GPT-4.1 vision) exclusively.
